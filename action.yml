@@ -44,6 +44,10 @@ inputs:
     description: 'Create a draft pull request'
     default: false
 
+defaults:
+  run:
+    shell: bash
+
 runs:
   using: "composite"
   steps:
