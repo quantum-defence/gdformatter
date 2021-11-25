@@ -44,51 +44,49 @@ inputs:
     description: 'Create a draft pull request'
     default: false
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout repo content
-        uses: actions/checkout@v2
+runs:
+  steps:
+    - name: checkout repo content
+      uses: actions/checkout@v2
 
-      - name: setup python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.7.7'
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.7.7'
 
-      - name: install python packages
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install gdtoolkit
-        
-      # for all .gd files, run `gdformat filepath` in bash
-      - name: execute gdformat
-        run: find . -name "*.gd" -exec sh -c 'gdformat "$0"' {} \; 
+    - name: install python packages
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install gdtoolkit
 
-      - name: Create Pull Request
-        id: cpr
-        uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ github.event.inputs.token }}
-          path: ${{ github.event.inputs.path }}
-          commit-message: ${{ github.event.inputs.commit-message }}
-          committer: ${{ github.events.inputs.committer }}
-          author: ${{ github.events.inputs.author }}
-          branch: ${{ github.events.inputs.branch }}
-          branch-suffix: ${{ github.events.inputs.branch-suffix }}
-          delete-branch: ${{ github.events.inputs.delete-branch }}
-          title: 'Changes by gdformatter action.'
-          body: 'Automated changes by [gdformatter](https://github.com/quantum-defence/gdformatter) GitHub action'
-          labels: ${{ github.events.inputs.labels }}
-          assignees: ${{ github.events.inputs.assignees }}
-          reviewers: ${{ github.events.inputs.reviewers }}
-          team-reviewers: ${{ github.events.inputs.team-reviewers }}
-          draft: ${{ github.events.inputs.draft }}
+    # for all .gd files, run `gdformat filepath` in bash
+    - name: execute gdformat
+      run: find . -name "*.gd" -exec sh -c 'gdformat "$0"' {} \; 
 
-      - name: Check outputs
-        run: |
-          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
-          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+    - name: Create Pull Request
+      id: cpr
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ github.event.inputs.token }}
+        path: ${{ github.event.inputs.path }}
+        commit-message: ${{ github.event.inputs.commit-message }}
+        committer: ${{ github.events.inputs.committer }}
+        author: ${{ github.events.inputs.author }}
+        branch: ${{ github.events.inputs.branch }}
+        branch-suffix: ${{ github.events.inputs.branch-suffix }}
+        delete-branch: ${{ github.events.inputs.delete-branch }}
+        title: 'Changes by gdformatter action.'
+        body: 'Automated changes by [gdformatter](https://github.com/quantum-defence/gdformatter) GitHub action'
+        labels: ${{ github.events.inputs.labels }}
+        assignees: ${{ github.events.inputs.assignees }}
+        reviewers: ${{ github.events.inputs.reviewers }}
+        team-reviewers: ${{ github.events.inputs.team-reviewers }}
+        draft: ${{ github.events.inputs.draft }}
+
+    - name: Check outputs
+      run: |
+        echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+        echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
 
 branding:
   icon: 'code'  
