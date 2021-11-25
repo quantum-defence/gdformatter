@@ -54,7 +54,6 @@ runs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.7.7'
-      shell: bash
 
     - name: install python packages
       run: |
@@ -86,7 +85,6 @@ runs:
         reviewers: ${{ github.events.inputs.reviewers }}
         team-reviewers: ${{ github.events.inputs.team-reviewers }}
         draft: ${{ github.events.inputs.draft }}
-      shell: bash
 
     - name: Check outputs
       run: |
