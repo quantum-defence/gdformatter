@@ -45,6 +45,7 @@ inputs:
     default: false
 
 runs:
+  using: "composite"
   steps:
     - name: checkout repo content
       uses: actions/checkout@v2
